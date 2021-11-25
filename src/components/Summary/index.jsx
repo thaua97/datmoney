@@ -1,4 +1,7 @@
 import React, { useContext } from 'react';
+import { formatMoney } from '../../services/format';
+import Context from '../../context';
+
 // styles
 import { Container } from "./styles";
 
@@ -6,12 +9,26 @@ import { Container } from "./styles";
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import totalImg from "../../assets/total.svg";
-import Context from '../../context';
 
 export function Summary() {
-    const data = useContext(Context.TransactionContext);
+    const { transactions } = useContext(Context.TransactionContext);
 
-    console.log(data);
+    const summary = transactions.reduce((acc, transaction) => {
+        if(transaction.type === 'deposit') {
+            acc.deposits += transaction.amount;
+            acc.total += transaction.amount;
+            
+        } else {
+            acc.withdraws += transaction.amount;
+            acc.total -= transaction.amount;
+        }
+
+        return acc;
+    }, {
+        deposits: 0,
+        withdraws: 0,
+        total: 0
+    });
 
     return (
        <Container>
@@ -20,7 +37,7 @@ export function Summary() {
                    <p>Entradas</p>
                    <img src={incomeImg} alt="income" />
                </header>
-               <strong>R$1000,00</strong>
+               <strong>{formatMoney(summary.deposits)}</strong>
            </div>
 
            <div>
@@ -28,7 +45,7 @@ export function Summary() {
                    <p>Saidas</p>
                    <img src={outcomeImg} alt="outcome" />
                </header>
-               <strong>- R$500,00</strong>
+               <strong>- {formatMoney(summary.withdraws)}</strong>
            </div>
 
            <div>
@@ -36,7 +53,7 @@ export function Summary() {
                    <p>Total</p>
                    <img src={totalImg} alt="total" />
                </header>
-               <strong>R$1000,00</strong>
+               <strong>{formatMoney(summary.total)}</strong>
            </div>
        </Container>
     );
