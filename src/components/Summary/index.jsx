@@ -6,10 +6,10 @@ import { Container } from "./styles";
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import totalImg from "../../assets/total.svg";
-import { TransactionContext } from '../../TransactionsContext';
+import Context from '../../context';
 
 export function Summary() {
-    const data = useContext(TransactionContext);
+    const data = useContext(Context.TransactionContext);
 
     console.log(data);
 
