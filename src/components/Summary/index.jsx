@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { formatMoney } from '../../services/format';
-import Context from '../../context';
+import { useTransactions } from '../../hooks/useTransactions';
 
 // styles
 import { Container } from "./styles";
@@ -11,7 +11,7 @@ import outcomeImg from "../../assets/outcome.svg";
 import totalImg from "../../assets/total.svg";
 
 export function Summary() {
-    const { transactions } = useContext(Context.TransactionContext);
+    const { transactions } = useTransactions();
 
     const summary = transactions.reduce((acc, transaction) => {
         if(transaction.type === 'deposit') {
